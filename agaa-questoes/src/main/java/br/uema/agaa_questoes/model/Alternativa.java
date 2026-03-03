@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class Alternativa {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String texto;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "questao_id", nullable = false)
     private Questao questao;
