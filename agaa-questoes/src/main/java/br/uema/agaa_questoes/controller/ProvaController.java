@@ -2,10 +2,9 @@ package br.uema.agaa_questoes.controller;
 
 
 import br.uema.agaa_questoes.model.Prova;
+import br.uema.agaa_questoes.model.Questao;
 import br.uema.agaa_questoes.repository.ProvaRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,4 +25,12 @@ public class ProvaController {
         return repository.findAll();
 
     }
+
+    @PostMapping
+    public Prova save(@RequestBody Prova prova){
+        return repository.save(prova);
+
+    }
+
+
 }

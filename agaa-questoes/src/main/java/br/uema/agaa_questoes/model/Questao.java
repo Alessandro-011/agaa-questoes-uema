@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Questao {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer numero_na_prova;
