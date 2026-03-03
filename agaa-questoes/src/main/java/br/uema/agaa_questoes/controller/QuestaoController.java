@@ -41,19 +41,21 @@ public class QuestaoController {
     public Questao save(@Valid @RequestBody Questao questao) {
         questao.setId(null);
 
-        // garante vínculo das alternativas
         if (questao.getAlternativas() != null) {
             for (Alternativa a : questao.getAlternativas()) {
                 a.setQuestao(questao);
             }
         }
 
-        // garante vínculo do gabarito
         if (questao.getGabarito() != null) {
             questao.getGabarito().setQuestao(questao);
         }
 
-        return repository.save(questao);
+        try {
+            return repository.save(questao);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("Já existe uma questão com esse número nessa prova (numero_na_prova duplicado).");
+        }
     }
 
     @PutMapping("/{id}")
@@ -71,22 +73,24 @@ public class QuestaoController {
         existente.setTipo(questao.getTipo());
         existente.setProva(questao.getProva());
 
-        // alternativas: substitui tudo (orphanRemoval=true remove as antigas)
         existente.getAlternativas().clear();
         if (questao.getAlternativas() != null) {
             for (Alternativa a : questao.getAlternativas()) {
-                existente.addAlternativa(a); // já seta questao
+                existente.addAlternativa(a);
             }
         }
 
-        // gabarito: substitui
         Gabarito g = questao.getGabarito();
         existente.setGabarito(g);
         if (g != null) {
             g.setQuestao(existente);
         }
 
-        return repository.save(existente);
+        try {
+            return repository.save(existente);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("Já existe uma questão com esse número nessa prova (numero_na_prova duplicado).");
+        }
     }
 
     @DeleteMapping("/{id}")
