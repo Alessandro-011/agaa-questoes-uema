@@ -36,4 +36,17 @@ public class Questao {
     @JoinColumn(name = "prova_id")
     private Prova prova;
 
+
+    @OneToMany(mappedBy = "questao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Alternativa> alternativas = new java.util.ArrayList<>();
+
+    public void addAlternativa(Alternativa alternativa) {
+        alternativas.add(alternativa);
+        alternativa.setQuestao(this);
+    }
+
+    // relacionamento de um pra um com o gabarito
+    @OneToOne(mappedBy = "questao", cascade = CascadeType.ALL)
+    private Gabarito gabarito;
+
 }
